@@ -21,9 +21,11 @@ const Register = () => {
   function onSubmit(event) {
     event.preventDefault();
     dispatch(registerUser(formData)).then((data) => {
-      if (data?.payload?.success) {
-        toast({ title: data?.payload?.message });
+      if (data?.payload?.status === "success") {
         navigate("/auth/login");
+        toast({ title: data?.payload?.message });
+      } else {
+        toast({ title: data?.payload?.message, variant: "destructive" });
       }
       console.log(data);
     });
