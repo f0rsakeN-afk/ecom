@@ -3,6 +3,7 @@ const app = express()
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 const userRoutes = require('./routes/userRoutes')
+const productRoutes = require('./routes/productRoutes')
 
 app.use(express.json())
 
@@ -28,5 +29,6 @@ app.use(cookieParser());
 
 
 app.use('/api/v1/users', userRoutes)
+app.use('/api/v1/products', productRoutes)
 
 module.exports = app;
