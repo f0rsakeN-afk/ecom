@@ -49,7 +49,7 @@ const AdminProducts = () => {
             <SheetTitle>Add New Product</SheetTitle>
           </SheetHeader>
           <ProductImageUpload
-            file={imageFile}
+            imageFile={imageFile}
             setImageFile={setImageFile}
             uploadedImageUrl={uploadedImageUrl}
             setUploadedImageUrl={setUploadedImageUrl}
