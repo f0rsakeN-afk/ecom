@@ -31,7 +31,7 @@ const AdminProducts = () => {
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const dispatch = useDispatch();
 
-  const { productsList } = useSelector((state) => state.adminProducts);
+  const productsList = useSelector((state) => state.adminProducts);
 
   console.log(productsList, "naresh");
 
