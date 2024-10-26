@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommonForm from "@/components/common/Form";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/sheet";
 import { addProductFormElements } from "@/config";
 import ProductImageUpload from "@/components/admin-view/imageUpload";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProduct } from "@/store/admin/productSlice";
 
 const initialFormData = {
   image: null,
@@ -21,14 +23,25 @@ const initialFormData = {
   totalStock: "",
 };
 
-function onSubmit() {}
-
 const AdminProducts = () => {
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
+  const dispatch = useDispatch();
+
+  const { productsList } = useSelector((state) => state.adminProducts);
+
+  console.log(productsList, "naresh");
+
+  function onSubmit(event) {
+    event.preventDefault();
+  }
+
+  useEffect(() => {
+    dispatch(getAllProduct());
+  }, [dispatch]);
 
   return (
     <>
@@ -56,6 +69,7 @@ const AdminProducts = () => {
             uploadedImageUrl={uploadedImageUrl}
             setUploadedImageUrl={setUploadedImageUrl}
             setImageLoadingState={setImageLoadingState}
+            imageLoadingState={imageLoadingState}
           />
           <div className="py-6">
             <CommonForm
