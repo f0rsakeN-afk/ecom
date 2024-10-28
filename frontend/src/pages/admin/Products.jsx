@@ -55,7 +55,7 @@ function AdminProducts() {
             formData,
           })
         ).then((data) => {
-          console.log(data, "edit");
+          //console.log(data, "edit");
 
           if (data?.payload?.status === "success") {
             dispatch(getAllProduct());
@@ -83,7 +83,7 @@ function AdminProducts() {
   }
 
   function handleDelete(getCurrentProductId) {
-    dispatch(deleteProduct(getCurrentProductId)).then((data) => {
+    dispatch(deleteProduct({ id: getCurrentProductId })).then((data) => {
       if (data?.payload?.status === "success") {
         dispatch(getAllProduct());
       }
