@@ -3,7 +3,7 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 
-const ShoppintProductTile = ({ product }) => {
+const ShoppingProductTile = ({ product }) => {
   return (
     <Card className="w-full max-w-sm mx-auto">
       <div className="">
@@ -32,10 +32,10 @@ const ShoppintProductTile = ({ product }) => {
           <div className="flex justify-between items-center mb-2">
             <span
               className={`${
-                product.salePrice > 0 ? "line-through" : ""
+                product?.salePrice > 0 ? "line-through " : ""
               }text-lg  font-semibold text-primary`}
             >
-              {product.price}
+              {product?.price}
             </span>
             {product?.salePrice > 0 ? (
               <span className="text-lg font-semibold text-primary">
@@ -52,4 +52,4 @@ const ShoppintProductTile = ({ product }) => {
   );
 };
 
-export default ShoppintProductTile;
+export default ShoppingProductTile;
