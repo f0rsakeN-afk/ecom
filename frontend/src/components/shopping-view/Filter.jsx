@@ -25,6 +25,12 @@ const ProductFilter = ({ filters, handleFilters }) => {
                     className="flex items-center gap-2 font-medium"
                   >
                     <Checkbox
+                      checked={
+                        filters &&
+                        Object.keys(filters).length > 0 &&
+                        filters[el] &&
+                        filters[el].indexOf(option.id) > -1
+                      }
                       onCheckedChange={() => handleFilters(el, option.id)}
                     />
                     {option.label}
