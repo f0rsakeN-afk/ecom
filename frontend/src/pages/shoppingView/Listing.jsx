@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProductFilter from "@/components/shopping-view/Filter";
 import {
   DropdownMenu,
@@ -16,22 +16,53 @@ import ShoppingProductTile from "@/components/shopping-view/ProductTiles";
 
 const ShoppingListing = () => {
   const dispatch = useDispatch();
-
   const { productList } = useSelector((state) => state.shopProducts);
 
-  console.log(productList);
+  //console.log(productList);
+
+  const [filters, setFilters] = useState({});
+  const [sort, setSort] = useState(null);
+
+  function handleSort(value) {
+    setSort(value);
+    //console.log(value);
+  }
+
+  function handleFilters(getSectionId, getCurrentOptions) {
+    //console.log(getSectionId, getCurrentOptions);
+    let copyFilters = { ...filters };
+    const indexOfCurrentSection =
+      Object.keys(copyFilters).indexOf(getSectionId);
+
+    if (indexOfCurrentSection === -1) {
+      copyFilters = { ...copyFilters, [getSectionId]: [getCurrentOptions] };
+    } else {
+      const indexOfCurrentOptions =
+        copyFilters[getSectionId].indexOf(getCurrentOptions);
+      if (indexOfCurrentOptions === -1) {
+        copyFilters[getSectionId].push(getCurrentOptions);
+      } else {
+        copyFilters[getSectionId].splice(indexOfCurrentOptions, 1);
+      }
+    }
+    setFilters(copyFilters);
+  }
+
+  //console.log(filters);
 
   useEffect(() => {
     dispatch(fetchAllFilteredProducts());
   }, [dispatch]);
   return (
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
-      <ProductFilter />
+      <ProductFilter filters={filters} handleFilters={handleFilters} />
       <div className="bg-background w-full rounded-lg shadow-sm">
         <div className="p-4 border-b flex  items-center justify-between">
           <h2 className="text-lg font-extrabold ">All Products</h2>
           <div className="flex items-center gap-3">
-            <span className="text-muted-foreground">10 Products</span>
+            <span className="text-muted-foreground">
+              {productList?.length} Products
+            </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -44,9 +75,9 @@ const ShoppingListing = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent alien="end" className="w-[200px]">
-                <DropdownMenuRadioGroup>
+                <DropdownMenuRadioGroup value={sort} onValueChange={handleSort}>
                   {sortOptions.map((el) => (
-                    <DropdownMenuRadioItem key={el.id}>
+                    <DropdownMenuRadioItem value={el.id} key={el.id}>
                       {el.label}
                     </DropdownMenuRadioItem>
                   ))}
@@ -55,7 +86,7 @@ const ShoppingListing = () => {
             </DropdownMenu>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 p-4">
           {productList && productList.length > 0
             ? productList?.map((products) => (
                 <ShoppingProductTile product={products} key={products._id} />
