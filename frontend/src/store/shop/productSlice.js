@@ -7,8 +7,11 @@ const initialState = {
     productList: []
 }
 
-export const fetchAllFilteredProducts = createAsyncThunk('/shop/fetchShopProducts', async () => {
-    const result = await axios.get('http://localhost:3000/api/v1/shop/get');
+export const fetchAllFilteredProducts = createAsyncThunk('/shop/fetchShopProducts', async ({ filterParams, sortParams }) => {
+    const query = new URLSearchParams({
+        ...filterParams, sortBy: sortParams
+    })
+    const result = await axios.get(`http://localhost:3000/api/v1/shop/get?${query}`);
     return result?.data
 })
 
