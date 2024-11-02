@@ -33,6 +33,14 @@ const shopProductSlice = createSlice({
         }).addCase(fetchAllFilteredProducts.rejected, (state, action) => {
             state.isLoading = false;
             state.productList = []
+        }).addCase(fetchProductDetails.pending, (state, action) => {
+            state.isLoading = true;
+        }).addCase(fetchProductDetails.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.productDetails = action.payload.data;
+        }).addCase(fetchProductDetails.rejected, (state, action) => {
+            state.isLoading = false;
+            state.productDetails = null
         })
     }
 })
