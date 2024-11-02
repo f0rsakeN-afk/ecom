@@ -4,7 +4,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
     isLoading: false,
-    productList: []
+    productList: [],
+    productDetails: null
 }
 
 export const fetchAllFilteredProducts = createAsyncThunk('/shop/fetchShopProducts', async ({ filterParams, sortParams }) => {
@@ -12,6 +13,11 @@ export const fetchAllFilteredProducts = createAsyncThunk('/shop/fetchShopProduct
         ...filterParams, sortBy: sortParams
     })
     const result = await axios.get(`http://localhost:3000/api/v1/shop/get?${query}`);
+    return result?.data
+})
+
+export const fetchProductDetails = createAsyncThunk('/shop/fetchProductDetails', async (id) => {
+    const result = await axios.get(`http://localhost:3000/api/v1/shop/get/${id}`);
     return result?.data
 })
 
