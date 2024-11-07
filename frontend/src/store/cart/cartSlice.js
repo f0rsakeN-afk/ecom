@@ -14,6 +14,13 @@ export const addToCart = createAsyncThunk('cart/addToCart', async ({ userId, pro
     return response.data;
 })
 
+
+export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (userId) => {
+    const response = await axios.get(`http://localhost:3000/api/v1/cart/get/${userId}`)
+    return response.data;
+})
+
+
 const shoppingCartSlice = createSlice({
     name: 'cart',
     initialState,
