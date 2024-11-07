@@ -21,6 +21,11 @@ export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (use
 })
 
 
+export const deleteCartItem = createAsyncThunk('/cart/deleteCartItem', async ({ userId, productId }) => {
+    const response = await axios.delete(`http://localhost:3000/api/v1/cart/${userId}/${productId}`)
+    return response.data;
+})
+
 const shoppingCartSlice = createSlice({
     name: 'cart',
     initialState,
