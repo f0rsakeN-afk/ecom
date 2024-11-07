@@ -93,7 +93,50 @@ exports.fetchCartItems = async (req, res) => {
 
 exports.updateCartItemQuantity = async (req, res) => {
     try {
+        const { userId, product, quantity } = req.body;
+        if (!userId || !productId || quantity <= 0) {
+            return res.status(400).json({
+                status: 'success',
+                message: 'Invalid data provided'
+            })
+        }
+        const cart = await Cart.findOne({ userId });
+        if (!cart) {
+            return res.status(404).json({
+                status: 'failed',
+                message: 'Cart not found'
+            })
+        }
+        const findCurrentProductIndex = cart.items.findIndex(item => item.productId.toString() === productId);
+        if (findCurrentProductIndex === -1) {
+            return res.status(404).json({
+                status: 'failed',
+                message: 'Cart items not present'
+            })
+        }
+        cart.items[findCurrentProductIndex].quantity = quantity;
+        await cart.save();
+        await cart.populate({
+            path: 'items.productId',
+            select: "image title price salePrice"
+        })
 
+
+        const populateCartItems = cart.items.map(item => ({
+            productId: item.productId ? item.productId._id : null,
+            image: item.image ? item.productId.image : null,
+            title: item.title ? item.productId.title : 'Product not found',
+            price: item.price ? item.productId.price : null,
+            salePrice: item.salePrice ? item.productId.salePrice : null,
+            quantity: item.quantity
+        }));
+        res.status(200).json({
+            status: 'success',
+            data: {
+                ...cart._doc,
+                items: populateCartItems
+            }
+        })
     } catch (error) {
         console.log(error)
         res.status(500).json({
