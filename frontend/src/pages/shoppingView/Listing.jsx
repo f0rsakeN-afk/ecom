@@ -18,7 +18,7 @@ import {
 import ShoppingProductTile from "@/components/shopping-view/ProductTiles";
 import { useSearchParams } from "react-router-dom";
 import ProductsDetails from "@/components/shopping-view/ProductsDetails";
-import { addToCart } from "@/store/cart/cartSlice";
+import { addToCart, fetchCartItems } from "@/store/cart/cartSlice";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -84,7 +84,11 @@ const ShoppingListing = () => {
         productId: getCurrentProductId,
         quantity: 1,
       })
-    ).then((data) => console.log(data));
+    ).then((data) => {
+      if (data?.payload?.status === "success") {
+        dispatch(fetchCartItems(user?.id));
+      }
+    });
   }
 
   //console.log(filters);
