@@ -4,7 +4,7 @@ const Products = require('../models/productModal')
 exports.addToCart = async (req, res) => {
     try {
         const { userId, productId, quantity } = req.body;
-        if (!userId || !productId || quantity < 0) {
+        if (!userId || !productId || quantity <= 0) {
             return res.status(400).json({
                 status: 'failed',
                 message: 'Invalid data provided'
@@ -23,7 +23,7 @@ exports.addToCart = async (req, res) => {
         }
         const findCurrentProductIndex = cart.items.findIndex(item => item.productId.toString() === productId);
         if (findCurrentProductIndex === -1) {
-            cart.items.push(product, quantity)
+            cart.items.push({ product, quantity })
         } else {
             cart.items[findCurrentProductIndex].quantity += quantity
         }
