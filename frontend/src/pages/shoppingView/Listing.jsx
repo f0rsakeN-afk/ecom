@@ -18,6 +18,7 @@ import {
 import ShoppingProductTile from "@/components/shopping-view/ProductTiles";
 import { useSearchParams } from "react-router-dom";
 import ProductsDetails from "@/components/shopping-view/ProductsDetails";
+import { addToCart } from "@/store/cart/cartSlice";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -35,6 +36,7 @@ const ShoppingListing = () => {
   const { productList, productDetails } = useSelector(
     (state) => state.shopProducts
   );
+  const { user } = useSelector((state) => state.auth);
   //console.log(productDetails);
   //console.log(productList);
 
@@ -72,6 +74,17 @@ const ShoppingListing = () => {
   function handlegetProductDetails(getCurrentProductId) {
     // console.log(getCurrentProductId);
     dispatch(fetchProductDetails(getCurrentProductId));
+  }
+
+  function handleAddToCart(getCurrentProductId) {
+    //console.log(getCurrentProductId);
+    dispatch(
+      addToCart({
+        userId: user?.id,
+        productId: getCurrentProductId,
+        quantity: 1,
+      })
+    ).then((data) => console.log(data));
   }
 
   //console.log(filters);
@@ -140,6 +153,7 @@ const ShoppingListing = () => {
                 <ShoppingProductTile
                   handlegetProductDetails={handlegetProductDetails}
                   product={products}
+                  handleAddToCart={handleAddToCart}
                   key={products._id}
                 />
               ))

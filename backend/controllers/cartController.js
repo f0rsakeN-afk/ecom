@@ -23,7 +23,7 @@ exports.addToCart = async (req, res) => {
         }
         const findCurrentProductIndex = cart.items.findIndex(item => item.productId.toString() === productId);
         if (findCurrentProductIndex === -1) {
-            cart.items.push({ product, quantity })
+            cart.items.push({ productId, quantity })
         } else {
             cart.items[findCurrentProductIndex].quantity += quantity
         }
