@@ -19,6 +19,7 @@ import ShoppingProductTile from "@/components/shopping-view/ProductTiles";
 import { useSearchParams } from "react-router-dom";
 import ProductsDetails from "@/components/shopping-view/ProductsDetails";
 import { addToCart, fetchCartItems } from "@/store/cart/cartSlice";
+import { useToast } from "@/hooks/use-toast";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -37,6 +38,7 @@ const ShoppingListing = () => {
     (state) => state.shopProducts
   );
   const { user } = useSelector((state) => state.auth);
+
   //console.log(productDetails);
   //console.log(productList);
 
@@ -44,6 +46,7 @@ const ShoppingListing = () => {
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const { toast } = useToast();
 
   function handleSort(value) {
     setSort(value);
@@ -87,6 +90,9 @@ const ShoppingListing = () => {
     ).then((data) => {
       if (data?.payload?.status === "success") {
         dispatch(fetchCartItems(user?.id));
+        toast({
+          title: "Added to cart successfully",
+        });
       }
     });
   }
