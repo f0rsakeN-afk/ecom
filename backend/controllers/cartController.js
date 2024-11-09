@@ -93,7 +93,7 @@ exports.fetchCartItems = async (req, res) => {
 
 exports.updateCartItemQuantity = async (req, res) => {
     try {
-        const { userId, product, quantity } = req.body;
+        const { userId, productId, quantity } = req.body;
         if (!userId || !productId || quantity <= 0) {
             return res.status(400).json({
                 status: 'success',
