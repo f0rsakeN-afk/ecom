@@ -148,7 +148,7 @@ exports.updateCartItemQuantity = async (req, res) => {
 
 exports.deleteCartItem = async (req, res) => {
     try {
-        const { userId, productId } = req.body;
+        const { userId, productId } = req.params;
         if (!userId || !productId) {
             return res.status(400).json({
                 status: 'failed',
@@ -190,7 +190,7 @@ exports.deleteCartItem = async (req, res) => {
         console.log(error)
         res.status(500).json({
             status: 'error',
-            message: error.message
+            message: error.message,
         })
     }
 }
